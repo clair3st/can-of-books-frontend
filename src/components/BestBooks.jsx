@@ -13,7 +13,9 @@ class BestBooks extends React.Component {
   }
 
   async componentDidMount() {
-    axios.get(`http://localhost:3001/books`)
+    const API_URI = import.meta.env.VITE_IS_DEV == 'true' ? import.meta.env.VITE_BOOKS_API_DEV : import.meta.env.VITE_BOOKS_API_PROD;
+    console.log(API_URI)
+    axios.get(`${API_URI}/books`)
       .then(response =>{
         console.log('fetch', response.data)
         this.setState({books: response.data})
