@@ -1,7 +1,10 @@
 # Start your own "Can of Books" App
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b1a63466-99b4-4ec0-bfd8-7e9fad0f99da/deploy-status)](https://app.netlify.com/sites/can-of-books01/deploys)
+
 This repository has starter code to begin work on creating your own online bookshelf.
 
+[Deployed Site](https://can-of-books01.netlify.app)
 [Deployed API](https://can-of-books-backend-b9fo.onrender.com/)
 MongoDB hosted by MongoDB Atlas
 
