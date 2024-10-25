@@ -7,11 +7,11 @@ class Header extends React.Component {
     return (
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="/">My Favorite Books</Navbar.Brand>
+          <Navbar.Brand to="/">My Favorite Books</Navbar.Brand>
 
           <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/about">About</Nav.Link>
+             <NavItem><Link to="/" className="nav-link">Home</Link></NavItem>
+             <NavItem><Link to="/about" className="nav-link">About</Link></NavItem>
           </Nav>
 
         </Container>
