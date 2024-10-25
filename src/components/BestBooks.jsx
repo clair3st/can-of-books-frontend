@@ -10,13 +10,10 @@ class BestBooks extends React.Component {
       books: []
     }
 
-      
   }
 
-  /* TODO: Make a GET request to your API to fetch all the books from the database  */
   async componentDidMount() {
     axios.get(`http://localhost:3001/books`)
-    // console.log(response)
       .then(response =>{
         console.log('fetch', response.data)
         this.setState({books: response.data})
