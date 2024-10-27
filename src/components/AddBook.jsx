@@ -6,7 +6,7 @@ class AddBooks extends React.Component {
 
   render() {
   	const props = this.props
-  	console.log(props)
+
   	return(
   		<>
 
