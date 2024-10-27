@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { Component, createRef } from 'react';
 import axios from 'axios';
 import AddBook from './AddBook.jsx'
 import ErrorMessage from './ErrorMessage'
-import { Carousel } from 'react-bootstrap';
+import { Carousel, Button } from 'react-bootstrap';
 const API_URI = import.meta.env.VITE_IS_DEV == 'true' ? import.meta.env.VITE_BOOKS_API_DEV : import.meta.env.VITE_BOOKS_API_PROD;
 
-class BestBooks extends React.Component {
+class BestBooks extends Component {
   constructor(props) {
     super(props);
+    this.carouselRef = createRef();
     this.state = {
       books: [],
       active: false,
@@ -16,7 +17,8 @@ class BestBooks extends React.Component {
         description: '',
         status: ''
       },
-      error_message: ''
+      error_message: '',
+      waiting: ''
     }
 
   }
@@ -48,13 +50,36 @@ class BestBooks extends React.Component {
     this.setState({new_book: newBookProps});
   }
 
+  handleDelete = async (book) => {
+
+    this.setState({waiting: book._id})
+
+    try {
+      const response = await axios.delete(`${API_URI}/books/${book._id}`);
+
+      this.setState((prevState) => ({
+        books: prevState.books.filter((x) => x._id !== book._id),
+        waiting: ''
+      }));
+
+      if (this.state.books.length && this.carouselRef.current) {
+        this.carouselRef.current.next();
+      }
+
+    } catch (error) {
+
+      this.setState({error_message: "There was an error deleting the book: "+book.title, waiting: ''});
+      console.log("Failed to delete the book.");
+    }
+  
+  }
+
   handleNewBookSubmit = async (e) => {
     e.preventDefault();
     this.handleModalClose();
 
     await axios.post(`${API_URI}/books`, null, {params: this.state.new_book})
     .then((response => {
-      console.log('successful post', response)
         if('title' in response.data){
           this.setState({books: [...this.state.books, response.data]})
         }
@@ -86,11 +111,12 @@ class BestBooks extends React.Component {
         </div>
         { 
           this.state.books.length ? (
-          <Carousel data-bs-theme="dark">
+          <Carousel data-bs-theme="dark" interval={null} ref={this.carouselRef}>
           {this.state.books.map((book,i) =>{
             return (
               <Carousel.Item key={i}>
                    
+                <Button variant="danger" className="float-end" onClick={() => this.handleDelete(book)} disabled={this.state.waiting == book['_id']} >Delete</Button>
                 <h3>{book.title}</h3>
                 <p>{book.description}.</p>
               
